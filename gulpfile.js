@@ -17,7 +17,10 @@ const html = () => {
         .pipe(pug({ pretty: true }))
         .pipe(gulp.dest('build'))
 }
-
+const fonts = () =>{
+    return gulp.src('src/fonts/*/*')
+        .pipe(gulp.dest('build/fonts'))
+}
 const styles = () => {
     return gulp.src('src/styles/*.scss')
         .pipe(sass().on('err', sass.logError))
@@ -62,10 +65,11 @@ const watch = () => {
     gulp.watch('src/styles/**/*.scss', styles);
     gulp.watch('src/scripts/**/*.js', scripts);
     gulp.watch('src/images/*.*', images);
+    gulp.watch('src/fonts/*.*', fonts)
 }
 
 exports.default = series(
     deleteBuild,
-    parallel(html, styles, scripts, images),
+    parallel(html, styles, scripts, images, fonts),
     parallel(watch, server)
 )
